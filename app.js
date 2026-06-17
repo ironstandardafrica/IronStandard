@@ -5,7 +5,7 @@
 (() => {
   'use strict';
 
-  const WA_NUMBER = '2347042776167';
+  const WA_NUMBER = '+2347039289609';
 
   /* ── NAV SCROLL ── */
   const nav = document.querySelector('.site-nav');
