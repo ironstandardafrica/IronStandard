@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Valerium Systems Nexus — Technology &amp; Innovation | Iron Mint</title>
+    <meta name="description" content="Valerium Systems Nexus Limited — intelligent digital systems, platforms, and infrastructure for individuals, institutions, and governments across Africa." />
+    <link rel="stylesheet" href="styles.css" />
+    <!-- VALERIUM accent override: steel blue -->
+    <style>
+        :root {
+            --accent: #5E8FCC;
+            --accent-glow: rgba(94, 143, 204, 0.2);
+            --accent-dim: rgba(94, 143, 204, 0.5);
+        }
+
+        /* Hero two‑column layout */
+        .valerium-hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--sp-xl);
+            align-items: center;
+        }
+
+        .valerium-hero-grid .hero-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .valerium-hero-grid .hero-image-wrap {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .valerium-hero-grid .hero-image-wrap img {
+            max-width: 100%;
+            width: 100%;
+            max-width: 460px;
+            border-radius: 6px;
+            display: block;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .valerium-hero-grid {
+                grid-template-columns: 1fr;
+                gap: var(--sp-lg);
+                text-align: center;
+            }
+
+            .valerium-hero-grid .hero-image-wrap {
+                justify-content: center;
+            }
+
+            .valerium-hero-grid .hero-image-wrap img {
+                max-width: 360px;
+            }
+
+            .valerium-hero-grid .hero-text .btn-group {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .valerium-hero-grid .hero-image-wrap img {
+                max-width: 100%;
+            }
+        }
+
+        /* Keep existing partner & card styles */
+        .partner-account {
+            background: var(--black-card);
+            padding: var(--sp-md);
+            border: 1px solid rgba(201, 168, 44, 0.15);
+            border-left: 3px solid var(--gold);
+            transition: border-color var(--t-fast), background var(--t-fast);
+        }
+        .partner-account:hover {
+            border-color: rgba(201, 168, 44, 0.4);
+            background: var(--black-mid);
+        }
+        .partner-account .bank-name {
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 0.2rem;
+        }
+        .partner-account .account-detail {
+            font-size: 0.95rem;
+            color: var(--white-70);
+            margin: 0.2rem 0;
+        }
+        .partner-account .account-number {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--white);
+            letter-spacing: 0.06em;
+        }
+        .partner-legal {
+            font-size: 0.8rem;
+            color: var(--white-45);
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding-top: var(--sp-sm);
+            margin-top: var(--sp-sm);
+            line-height: 1.6;
+        }
+
+        /* Copy button styles (reused from ekklesia) */
+        .account-copy-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 0.2rem;
+            flex-wrap: wrap;
+        }
+        .account-copy-wrapper .account-number {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--white);
+            letter-spacing: 0.06em;
+            user-select: all;
+            cursor: pointer;
+            padding: 0.1rem 0.2rem;
+            border-radius: 2px;
+            transition: background 0.15s ease;
+        }
+        .account-copy-wrapper .account-number:hover {
+            background: rgba(201, 168, 44, 0.08);
+        }
+        .copy-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            padding: 0.25rem 0.7rem;
+            background: transparent;
+            border: 1px solid rgba(201, 168, 44, 0.3);
+            border-radius: 3px;
+            color: var(--white-70);
+            font-family: var(--font-body);
+            font-size: 0.6rem;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .copy-btn:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            background: rgba(201, 168, 44, 0.08);
+        }
+        .copy-btn:active {
+            transform: scale(0.95);
+        }
+        .copy-btn svg {
+            width: 14px;
+            height: 14px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+        }
+        .copy-btn .copy-label {
+            transition: opacity 0.2s ease;
+        }
+        .copy-btn.copied {
+            border-color: #4CAF7D;
+            color: #4CAF7D;
+            background: rgba(76, 175, 125, 0.08);
+        }
+        .copy-feedback {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--black-mid);
+            color: var(--gold);
+            padding: 0.6rem 1.6rem;
+            border: 1px solid rgba(201, 168, 44, 0.3);
+            border-radius: 4px;
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 400;
+            letter-spacing: 0.04em;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 9999;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+        }
+        .copy-feedback.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        .copy-feedback .check {
+            display: inline-block;
+            margin-right: 0.5rem;
+            color: #4CAF7D;
+        }
+    </style>
+</head>
+<body>
+    <nav class="site-nav" role="navigation" aria-label="Main">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo" aria-label="Iron Mint">
+                <img src="image/iron-mint.png.webp" alt="Iron Mint logo" />
+            </a>
+            <button class="nav-toggle" aria-expanded="false" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link" data-page="home">Home</a>
+                <a href="about.html" class="nav-link" data-page="about">About</a>
+                <div class="nav-dropdown">
+                    <span class="nav-dropdown-toggle" aria-expanded="false">Our Entities ▾</span>
+                    <div class="nav-dropdown-menu">
+                        <a href="tasara.html">TASARA — Economic</a>
+                        <a href="valerium.html">Valerium — Technology</a>
+                        <a href="ekklesia.html">Ekklēsia — Mission</a>
+                    </div>
+                </div>
+                <a href="raah.html" class="nav-link" data-page="raah">Ra'ah</a>
+                <a href="iron-standard.html" class="nav-link" data-page="iron-standard">Iron Standard</a>
+                <a href="resources.html" class="nav-link" data-page="resources">Resources</a>
+                <a href="connect.html" class="nav-contact-btn" data-page="connect">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <main id="main-content">
+
+        <!-- ═══ HERO — with image on the right ═══ -->
+        <section class="hero-sm">
+            <div class="hero-bg-grid"></div>
+            <div style="position:absolute;inset:0;background:radial-gradient(ellipse 65% 60% at 65% 45%,rgba(94,143,204,0.08) 0%,transparent 65%);"></div>
+            <div class="deco-corner deco-corner-tl" style="border-color:rgba(94,143,204,0.3);" aria-hidden="true"></div>
+
+            <div class="hero-inner container valerium-hero-grid">
+                <!-- Left column: text -->
+                <div class="hero-text">
+                    <span class="entity-badge entity-badge-valerium" data-reveal style="margin-bottom:var(--sp-md);display:inline-flex;">Technology &amp; Innovation — Iron Mint</span>
+                    <h1 data-reveal data-reveal-delay="1"
+                        style="font-family:var(--font-display);font-size:clamp(2.2rem,6vw,4.8rem);color:var(--white);margin-bottom:var(--sp-sm);line-height:1.05;letter-spacing:0.04em;">
+                        Valerium Systems Nexus Limited
+                    </h1>
+                    <p data-reveal data-reveal-delay="2" style="font-family:var(--font-serif);font-style:italic;font-size:1.25rem;color:rgba(94,143,204,0.9);margin-bottom:var(--sp-md);">
+                        Intelligent Systems. Purposeful Technology. Built for Impact.
+                    </p>
+                    <p data-reveal data-reveal-delay="3" style="color:var(--white-70);max-width:520px;font-size:.95rem;line-height:1.85;margin-bottom:var(--sp-lg);font-weight:300;">
+                        Technology &amp; Innovation — A Subsidiary of Iron Mint Stewardship Limited
+                    </p>
+                    <div data-reveal data-reveal-delay="4" class="btn-group" style="display:flex;flex-wrap:wrap;gap:1rem;">
+                        <a href="#services" class="btn btn-accent">Our Services</a>
+                        <a class="btn btn-outline-white" data-wa-message="Hello Iron Mint, I am interested in Valerium Systems Nexus technology services. Please send me more information.">Enquire Now</a>
+                    </div>
+                </div>
+
+                <!-- Right column: image -->
+                <div class="hero-image-wrap" data-reveal data-reveal-delay="2">
+                    <img src="image/valerium.png" alt="Valerium Systems Nexus" />
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══ WHO WE ARE ═══ -->
+        <section class="section-full section-mid">
+            <div class="container" style="padding:var(--sp-xl) var(--sp-md);">
+                <div style="display:grid;grid-template-columns:1fr;gap:var(--sp-xl);align-items:start;" id="val-grid">
+                    <div data-reveal>
+                        <span class="section-label section-label-accent">Who We Are</span>
+                        <h2 class="section-title">Intelligent Systems<br><em>Built to Endure</em></h2>
+                        <div class="gold-rule" style="background:var(--valerium);"></div>
+                        <p style="font-size:1.05rem;color:var(--white-90);line-height:1.85;margin-bottom:var(--sp-md);font-weight:300;">
+                            Valerium Systems Nexus Limited is a technology and innovation company engaged in the design, development, deployment, management, and maintenance of digital applications, intelligent systems, software solutions, platforms, and technological infrastructure.
+                        </p>
+                        <p style="color:var(--white-70);line-height:1.85;font-weight:300;">
+                            We serve individuals, businesses, institutions, organisations, communities, and governments — building digital systems that don't just function, but endure.
+                        </p>
+                    </div>
+                    <div data-reveal data-reveal-delay="1">
+                        <h3 style="font-family:var(--font-display);font-size:1.1rem;color:var(--white);margin-bottom:var(--sp-md);letter-spacing:0.05em;">Sectors We Operate In</h3>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;">
+                            <div style="background:var(--black-card);border-left:2px solid var(--valerium);padding:.8rem var(--sp-sm);"><p style="font-family:var(--font-display);font-size:.72rem;font-weight:600;color:var(--white);letter-spacing:0.05em;">Digital Security &amp; Cybersecurity</p></div>
+                            <div style="background:var(--black-card);border-left:2px solid var(--valerium);padding:.8rem var(--sp-sm);"><p style="font-family:var(--font-display);font-size:.72rem;font-weight:600;color:var(--white);letter-spacing:0.05em;">Data Preservation &amp; Identity</p></div>
+                            <div style="background:var(--black-card);border-left:2px solid rgba(94,143,204,0.5);padding:.8rem var(--sp-sm);"><p style="font-family:var(--font-display);font-size:.72rem;font-weight:600;color:var(--white);letter-spacing:0.05em;">Enterprise Management Systems</p></div>
+                            <div style="background:var(--black-card);border-left:2px solid rgba(94,143,204,0.5);padding:.8rem var(--sp-sm);"><p style="font-family:var(--font-display);font-size:.72rem;font-weight:600;color:var(--white);letter-spacing:0.05em;">Financial Technology</p></div>
+                            <div style="background:var(--black-card);border-left:2px solid rgba(94,143,204,0.3);padding:.8rem var(--sp-sm);"><p style="font-family:var(--font-display);font-size:.72rem;font-weight:600;color:var(--white);letter-spacing:0.05em;">AI &amp; Automation</p></div>
+                            <div style="background:var(--black-card);border-left:2px solid rgba(94,143,204,0.3);padding:.8rem var(--sp-sm);"><p style="font-family:var(--font-display);font-size:.72rem;font-weight:600;color:var(--white);letter-spacing:0.05em;">Cloud Infrastructure</p></div>
+                            <div style="background:var(--black-card);border-left:2px solid rgba(94,143,204,0.15);padding:.8rem var(--sp-sm);"><p style="font-family:var(--font-display);font-size:.72rem;font-weight:600;color:var(--white);letter-spacing:0.05em;">Digital Communication</p></div>
+                            <div style="background:var(--black-card);border-left:2px solid rgba(94,143,204,0.15);padding:.8rem var(--sp-sm);"><p style="font-family:var(--font-display);font-size:.72rem;font-weight:600;color:var(--white);letter-spacing:0.05em;">Research &amp; Development</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══ FLAGSHIP PRODUCT ═══ -->
+        <section class="section-full section-black">
+            <div class="container" style="padding:var(--sp-xl) var(--sp-md);">
+                <div data-reveal style="margin-bottom:var(--sp-lg);">
+                    <span class="section-label section-label-accent">Flagship Product</span>
+                    <h2 class="section-title">Valerium <em>Vault &amp; Seal</em></h2>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr;gap:var(--sp-xl);align-items:start;" id="vault-grid">
+                    <div data-reveal>
+                        <p style="font-size:1rem;color:var(--white-90);line-height:1.85;margin-bottom:var(--sp-md);font-weight:300;">
+                            Valerium Vault &amp; Seal is our flagship product suite — a secure, enterprise-grade system for digital asset protection, identity verification, and data preservation built specifically for African organisations operating in high-stakes environments.
+                        </p>
+                        <p style="color:var(--white-70);line-height:1.85;margin-bottom:var(--sp-lg);font-weight:300;">Full product specification and feature documentation available to verified inquirers.</p>
+                        <a class="btn btn-accent btn-sm" data-wa-message="Hello Valerium Systems Nexus, I am interested in the Valerium Vault & Seal product. Please send me specifications and pricing information.">Request Specifications →</a>
+                    </div>
+                    <div data-reveal data-reveal-delay="1">
+                        <div style="background:var(--black-card);border:1px solid rgba(94,143,204,0.2);border-top:3px solid var(--valerium);padding:var(--sp-lg);">
+                            <h4 style="font-family:var(--font-display);font-size:1rem;color:var(--white);margin-bottom:var(--sp-md);letter-spacing:0.06em;">Core Capabilities</h4>
+                            <div style="display:flex;flex-direction:column;gap:0.75rem;">
+                                <div style="display:flex;align-items:center;gap:var(--sp-sm);">
+                                    <div style="width:6px;height:6px;background:var(--valerium);flex-shrink:0;"></div>
+                                    <p style="font-size:0.88rem;color:var(--white-70);font-weight:300;">Secure digital asset vault with multi-layer encryption</p>
+                                </div>
+                                <div style="display:flex;align-items:center;gap:var(--sp-sm);">
+                                    <div style="width:6px;height:6px;background:var(--valerium);flex-shrink:0;"></div>
+                                    <p style="font-size:0.88rem;color:var(--white-70);font-weight:300;">Biometric-linked identity verification &amp; authentication</p>
+                                </div>
+                                <div style="display:flex;align-items:center;gap:var(--sp-sm);">
+                                    <div style="width:6px;height:6px;background:rgba(94,143,204,0.5);flex-shrink:0;"></div>
+                                    <p style="font-size:0.88rem;color:var(--white-70);font-weight:300;">Immutable audit trail &amp; document notarisation</p>
+                                </div>
+                                <div style="display:flex;align-items:center;gap:var(--sp-sm);">
+                                    <div style="width:6px;height:6px;background:rgba(94,143,204,0.5);flex-shrink:0;"></div>
+                                    <p style="font-size:0.88rem;color:var(--white-70);font-weight:300;">Cross-border data portability &amp; compliance</p>
+                                </div>
+                                <div style="display:flex;align-items:center;gap:var(--sp-sm);">
+                                    <div style="width:6px;height:6px;background:rgba(94,143,204,0.25);flex-shrink:0;"></div>
+                                    <p style="font-size:0.88rem;color:var(--white-70);font-weight:300;">Enterprise API integrations for institutions &amp; governments</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══ SERVICES ═══ -->
+        <section id="services" class="section-full section-mid">
+            <div class="container" style="padding:var(--sp-xl) var(--sp-md);">
+                <div data-reveal style="margin-bottom:var(--sp-lg);">
+                    <span class="section-label section-label-accent">What We Deliver</span>
+                    <h2 class="section-title">Our <em>Services</em></h2>
+                    <p class="section-intro">Valerium delivers across four primary service domains — each engineered for African scale.</p>
+                </div>
+                <div class="grid-4">
+                    <div class="card" style="border-top:2px solid var(--valerium);" data-reveal>
+                        <div style="width:40px;height:40px;background:var(--valerium-glow);border:1px solid var(--valerium-dim);display:flex;align-items:center;justify-content:center;margin-bottom:var(--sp-md);">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5E8FCC" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        </div>
+                        <h3 class="card-title" style="font-size:1rem;">Digital Security</h3>
+                        <p class="card-body" style="font-size:0.85rem;">Cybersecurity architecture, threat modelling, and institutional data protection at enterprise grade.</p>
+                    </div>
+                    <div class="card" style="border-top:2px solid var(--valerium);" data-reveal data-reveal-delay="1">
+                        <div style="width:40px;height:40px;background:var(--valerium-glow);border:1px solid var(--valerium-dim);display:flex;align-items:center;justify-content:center;margin-bottom:var(--sp-md);">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5E8FCC" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="1"/><path d="M8 21h8M12 17v4"/></svg>
+                        </div>
+                        <h3 class="card-title" style="font-size:1rem;">Platform Development</h3>
+                        <p class="card-body" style="font-size:0.85rem;">Custom platforms, applications, and digital ecosystems built for institutional scale and African contexts.</p>
+                    </div>
+                    <div class="card" style="border-top:2px solid var(--valerium);" data-reveal data-reveal-delay="2">
+                        <div style="width:40px;height:40px;background:var(--valerium-glow);border:1px solid var(--valerium-dim);display:flex;align-items:center;justify-content:center;margin-bottom:var(--sp-md);">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5E8FCC" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg>
+                        </div>
+                        <h3 class="card-title" style="font-size:1rem;">AI &amp; Automation</h3>
+                        <p class="card-body" style="font-size:0.85rem;">Intelligent automation systems and AI-powered tools that optimise operations for governments and enterprises.</p>
+                    </div>
+                    <div class="card" style="border-top:2px solid var(--valerium);" data-reveal data-reveal-delay="3">
+                        <div style="width:40px;height:40px;background:var(--valerium-glow);border:1px solid var(--valerium-dim);display:flex;align-items:center;justify-content:center;margin-bottom:var(--sp-md);">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5E8FCC" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+                        </div>
+                        <h3 class="card-title" style="font-size:1rem;">Infrastructure Consulting</h3>
+                        <p class="card-body" style="font-size:0.85rem;">Cloud strategy, digital infrastructure design, and long-term technology roadmapping for organisations.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══ FINAL CTA ═══ -->
+        <section class="section-full" style="background:var(--black-soft);text-align:center;border-top:1px solid rgba(94,143,204,0.15);">
+            <div class="container" style="padding:var(--sp-xl) var(--sp-md);">
+                <h2 data-reveal style="font-family:var(--font-display);font-size:clamp(1.8rem,4vw,3rem);color:var(--white);margin-bottom:var(--sp-md);letter-spacing:0.05em;">
+                    Ready to Build?
+                </h2>
+                <p data-reveal data-reveal-delay="1" style="color:var(--white-70);max-width:520px;margin:0 auto var(--sp-lg);line-height:1.85;font-weight:300;">
+                    Whether you are an institution, enterprise, or government seeking intelligent digital systems — Valerium is ready to build with you.
+                </p>
+                <div data-reveal data-reveal-delay="2" style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;">
+                    <a class="btn btn-accent" data-wa-message="Hello Valerium Systems Nexus, I would like to discuss a technology project or partnership opportunity.">Discuss Your Project</a>
+                    <a href="connect.html" class="btn btn-outline-white">Contact Iron Mint</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-main">
+            <div>
+                <div class="footer-brand-name">Iron <em>Mint</em></div>
+                <p class="footer-tagline">Structuring Value. Sustaining Nations.</p>
+                <div class="footer-social-row" style="margin-top:var(--sp-md);">
+                    <a href="https://tiktok.com/@apostleraah" class="footer-social-link" aria-label="TikTok" target="_blank" rel="noopener"><svg class="icon icon-tiktok" width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2v6a4 4 0 1 0 4 4V6h4V2h-8z" fill="currentColor"/></svg></a>
+                    <a href="https://tiktok.com/@apostleraah" class="footer-social-link" aria-label="TikTok" target="_blank" rel="noopener"><svg class="icon icon-tiktok" width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2v6a4 4 0 1 0 4 4V6h4V2h-8z" fill="currentColor"/></svg></a>
+                    <a href="https://tiktok.com/@apostleraah" class="footer-social-link" aria-label="TikTok" target="_blank" rel="noopener"><svg class="icon icon-tiktok" width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2v6a4 4 0 1 0 4 4V6h4V2h-8z" fill="currentColor"/></svg></a>
+                    <a href="https://tiktok.com/@apostleraah" class="footer-social-link" aria-label="TikTok" target="_blank" rel="noopener"><svg class="icon icon-tiktok" width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2v6a4 4 0 1 0 4 4V6h4V2h-8z" fill="currentColor"/></svg></a>
+                    <a href="https://youtube.com/@apostle_raah" class="footer-social-link" aria-label="YouTube" target="_blank" rel="noopener"><svg class="icon icon-youtube" width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M10 8l6 4-6 4z" fill="currentColor"/></svg></a>
+                </div>
+            </div>
+            <div>
+                <p class="footer-heading">Quick Links</p>
+                <ul class="footer-link-list">
+                    <li><a href="about.html">About Iron Mint</a></li>
+                    <li><a href="raah.html">Ra'ah</a></li>
+                    <li><a href="iron-standard.html">The Iron Standard</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="connect.html">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <p class="footer-heading">Our Entities</p>
+                <ul class="footer-link-list">
+                    <li><a href="tasara.html">TASARA Economic Systems</a></li>
+                    <li><a href="valerium.html">Valerium Systems Nexus</a></li>
+                    <li><a href="ekklesia.html">Ekklēsia Omni Missions</a></li>
+                    <li><a href="iron-standard.html">Stewardship Economy</a></li>
+                </ul>
+            </div>
+            <div>
+                <p class="footer-heading">The Terraformation Brief</p>
+                <p style="font-size:0.82rem;color:var(--white-45);margin-bottom:var(--sp-sm);line-height:1.65;">Monthly insights on stewardship, economics, and Africa's future.</p>
+                <form class="newsletter-form footer-newsletter-form" novalidate>
+                    <label for="footer-nl-v" class="sr-only">Email</label>
+                    <input type="email" id="footer-nl-v" placeholder="your@email.com" required />
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p class="footer-copy">© <span class="current-year">2026</span> Iron Mint Stewardship Limited. All rights reserved.</p>
+            <div class="footer-bottom-links"><a href="#">Privacy</a><a href="resources.html">Resources</a><a href="connect.html">Contact</a></div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+    <script>
+        // Grid responsiveness
+        const g1 = document.getElementById('val-grid');
+        const g2 = document.getElementById('vault-grid');
+
+        function setGrids() {
+            const d = window.innerWidth >= 900;
+            if (g1) g1.style.gridTemplateColumns = d ? '1fr 1fr' : '1fr';
+            if (g2) g2.style.gridTemplateColumns = d ? '1fr 1fr' : '1fr';
+        }
+        setGrids();
+        window.addEventListener('resize', setGrids);
+    </script>
+</body>
+</html>
+
+
+
+
+
