@@ -398,6 +398,8 @@ body::after {
   background:var(--black-card);
   border:1px solid rgba(255,255,255,0.06);
   padding:var(--sp-md);
+  transition:transform var(--t-med) var(--ease),border-color var(--t-med),box-shadow var(--t-med);
+}
 
 /* Footer social icons */
 .icon { display:inline-block; vertical-align:middle; color:inherit; }
@@ -406,9 +408,6 @@ body::after {
 .footer-social-link:hover .icon { color:var(--gold); transform:translateY(-1px); }
 @media (prefers-reduced-motion: reduce) {
   .footer-social-link .icon { transition: none; }
-}
- 
-  transition:transform var(--t-med) var(--ease),border-color var(--t-med),box-shadow var(--t-med);
 }
 .card:hover {
   transform:translateY(-5px);
@@ -986,4 +985,240 @@ select option { background:var(--black-mid);color:var(--white); }
     .ekklesia-hero-grid .hero-image-wrap img {
         max-width: 100%;
     }
+}
+
+/* ================================================================
+   MOBILE OPTIMISATION LAYER — v5
+   Global overflow safety net + responsive type/space/grid rules
+   for small screens. Loads last so it wins on cascade order.
+   ================================================================ */
+
+/* ── 0. GLOBAL ANTI-OVERFLOW SAFETY NET ──
+   Belt-and-braces rules so nothing can force horizontal scroll
+   on any page, regardless of inline styles used in the markup. */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+* { min-width: 0; } /* lets flex/grid children shrink instead of pushing width */
+img, svg, video, iframe, canvas, table {
+  max-width: 100%;
+  height: auto;
+}
+h1, h2, h3, h4, h5, h6, p, blockquote, span, a, li, label {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+}
+pre, code {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+/* Tables (if any are added later) never force page-level scroll */
+.table-responsive,
+table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+table thead, table tbody, table tr { width: 100%; }
+
+/* Any element a page author centers with a fixed max-width should
+   still clamp to the viewport with gutters on very narrow phones. */
+.container,
+.hero-inner,
+.footer-main,
+.footer-bottom {
+  width: 100%;
+  max-width: 100%;
+}
+@media (min-width: 480px) {
+  .container, .hero-inner { max-width: var(--max-w); }
+}
+
+/* ── 1. FLUID SPACING SCALE ──
+   Spacing tokens shrink on small screens so sections don't
+   force tall, gappy layouts that exaggerate scroll length. */
+@media (max-width: 640px) {
+  :root {
+    --sp-xs:  0.4rem;
+    --sp-sm:  0.85rem;
+    --sp-md:  1.25rem;
+    --sp-lg:  2.25rem;
+    --sp-xl:  3.25rem;
+    --sp-2xl: 4.5rem;
+  }
+  .container { padding: 0 var(--sp-md); }
+}
+@media (max-width: 380px) {
+  :root {
+    --sp-md: 1.1rem;
+    --sp-lg: 1.9rem;
+    --sp-xl: 2.75rem;
+  }
+}
+
+/* ── 2. TYPOGRAPHY — clamp everything, no fixed huge sizes ── */
+@media (max-width: 640px) {
+  .section-title {
+    font-size: clamp(1.6rem, 7vw, 2.4rem);
+    word-break: break-word;
+  }
+  .section-intro { font-size: 0.92rem; }
+  .pull-quote { font-size: clamp(1.05rem, 5vw, 1.3rem); padding: var(--sp-md) var(--sp-sm); }
+  blockquote { font-size: 1rem !important; }
+  .stat-number { font-size: clamp(1.9rem, 9vw, 2.6rem); }
+  .footer-brand-name { font-size: 1.25rem; }
+}
+
+/* Inline h1/hero headings in pages use clamp() already via style
+   attributes, but tighten the floor further on very small phones */
+@media (max-width: 400px) {
+  .hero h1, .hero-inner h1 { font-size: clamp(1.9rem, 9vw, 3rem) !important; }
+}
+
+/* ── 3. NAV — keep header usable & non-overflowing on narrow phones ── */
+@media (max-width: 480px) {
+  .nav-inner { padding: 0 var(--sp-sm); gap: 0.5rem; }
+  .nav-logo img { max-height: 34px; }
+  .nav-links { padding: var(--sp-sm) var(--sp-sm) var(--sp-md); }
+  .nav-contact-btn { padding: 0.5rem 1rem; font-size: 0.58rem; }
+}
+
+/* ── 4. HERO — reduce forced height & side padding on phones ── */
+@media (max-width: 640px) {
+  .hero {
+    min-height: 92svh;
+    min-height: 92vh;
+    padding: calc(var(--nav-h) + var(--sp-lg)) var(--sp-md) var(--sp-lg);
+  }
+  .hero-sm {
+    min-height: auto;
+    padding: calc(var(--nav-h) + var(--sp-md)) var(--sp-md) var(--sp-md);
+  }
+  .hero::after { background-size: 80% auto; }
+}
+
+/* ── 5. GRID HELPERS — guarantee single column on phones even if
+        inline styles or JS attempt two columns ── */
+@media (max-width: 640px) {
+  .grid-2, .grid-3, .grid-4 {
+    grid-template-columns: 1fr !important;
+  }
+  /* Any ad-hoc two-column inline grids used across pages
+     (e.g. icon+text rows, stat pairs, bank-detail pairs) collapse
+     to one column so long content never gets squeezed/overflows */
+  [style*="grid-template-columns:1fr 1fr"],
+  [style*="grid-template-columns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Two-column "icon left / label right" rows (auto 1fr) stay as-is —
+   the auto column is small (icon), so no overflow risk — but make
+   sure the gap shrinks so cards don't feel cramped */
+@media (max-width: 480px) {
+  [style*="grid-template-columns:auto 1fr"] {
+    gap: var(--sp-sm) !important;
+  }
+}
+
+.stat-grid { grid-template-columns: repeat(2, 1fr); }
+@media (max-width: 380px) {
+  .stat-grid { grid-template-columns: 1fr; }
+}
+
+/* ── 6. CARDS / TIER CARDS / NEWS CARDS — tighter padding on phones ── */
+@media (max-width: 480px) {
+  .card, .card-light, .tier-card, .pillar-card, .pillar-card-light, .doc-card {
+    padding: var(--sp-sm);
+  }
+  .doc-card { flex-wrap: wrap; }
+}
+
+/* ── 7. BUTTONS — never force overflow on narrow phones; allow full width stacking ── */
+@media (max-width: 480px) {
+  .btn { padding: 0.85rem 1.5rem; font-size: 0.62rem; width: 100%; }
+  .hero-inner div[style*="display:flex"] .btn,
+  div[style*="display:flex;flex-wrap:wrap;gap:1rem"] .btn {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+}
+
+/* ── 8. FORMS — inputs/selects/textareas never exceed viewport ── */
+input[type="text"], input[type="email"], select, textarea {
+  max-width: 100%;
+}
+@media (max-width: 480px) {
+  input[type="text"], input[type="email"], select, textarea {
+    font-size: 0.95rem;
+    padding: 0.8rem 0.9rem;
+  }
+}
+
+/* ── 9. FOOTER — tighten on phones, ensure newsletter form doesn't overflow ── */
+@media (max-width: 640px) {
+  .footer-main { padding: var(--sp-lg) var(--sp-md) var(--sp-md); gap: var(--sp-md); }
+  .footer-bottom { flex-direction: column; align-items: flex-start; gap: var(--sp-xs); text-align: left; }
+  .footer-tagline { max-width: 100%; }
+}
+
+/* ── 10. WHATSAPP FLOAT — pull in from edge & shrink slightly on phones ── */
+@media (max-width: 480px) {
+  .wa-float { bottom: 18px; right: 18px; width: 50px; height: 50px; }
+  .wa-float svg { width: 22px; height: 22px; }
+  .wa-float-tip { display: none; } /* tooltip hover state is meaningless on touch */
+}
+
+/* ── 11. DECORATIVE / ABSOLUTE ELEMENTS — never let oversized
+        decorative circles or grids create scrollable overflow ── */
+@media (max-width: 640px) {
+  .deco-corner { width: 26px; height: 26px; }
+  .deco-corner-tl, .deco-corner-tr { top: 14px; }
+  .deco-corner-bl, .deco-corner-br { bottom: 14px; }
+  .deco-corner-tl, .deco-corner-bl { left: 14px; }
+  .deco-corner-tr, .deco-corner-br { right: 14px; }
+}
+
+/* ── 12. ENTITY HERO GRIDS (Valerium / TASARA / Ekklēsia) ──
+   Tighten image cap further on the smallest phones for balance */
+@media (max-width: 380px) {
+  .valerium-hero-grid .hero-image-wrap img,
+  .tasara-hero-grid .hero-image-wrap img,
+  .ekklesia-hero-grid .hero-image-wrap img {
+    max-width: 280px;
+  }
+}
+
+/* ── 13. CEO / PORTRAIT FRAME — cap width on phones so the
+        photo doesn't dominate the very first viewport ── */
+@media (max-width: 640px) {
+  .ceo-photo-frame { max-width: 320px; margin: 0 auto; }
+}
+
+/* ── 14. RA'AH PAGE — author photo as the page-opening hero ──
+   Tight top padding under the fixed navbar, and a sensible cap
+   on the portrait so it reads as a hero, not an oversized thumbnail. */
+.raah-photo-hero {
+  padding-top: calc(var(--nav-h) + var(--sp-lg));
+}
+@media (max-width: 640px) {
+  .raah-photo-hero { padding-top: calc(var(--nav-h) + var(--sp-md)); }
+  .raah-photo-hero .ceo-photo-frame { max-width: 280px; }
+}
+
+/* ── 15. LANDSCAPE PHONES — avoid the 100vh hero swallowing the
+        entire short viewport in landscape orientation ── */
+@media (max-width: 900px) and (max-height: 500px) and (orientation: landscape) {
+  .hero { min-height: auto; padding-top: calc(var(--nav-h) + var(--sp-md)); padding-bottom: var(--sp-md); }
+}
+/* ── FIX FOR BROKEN HEADING TEXT ── */
+h1, .section-title, .hero-text h1, .hero-inner h1 {
+    word-break: normal !important;
+    word-wrap: normal !important;
+    overflow-wrap: normal !important;
+    hyphens: none !important;
 }
