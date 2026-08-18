@@ -109,6 +109,17 @@
     });
   }
 
+  /* ── NEWS CARD EXPAND / COLLAPSE (VIEW MORE) ── */
+  document.querySelectorAll('.news-expand-btn').forEach(btn => {
+    const content = document.getElementById(btn.dataset.target);
+    if (!content) return;
+    btn.addEventListener('click', () => {
+      const open = content.classList.toggle('open');
+      btn.classList.toggle('open', open);
+      btn.querySelector('.expand-text').textContent = open ? 'View Less' : 'View More';
+    });
+  });
+
   /* ── TASARA PILLAR SELECTOR ── */
   const pillarBtns   = document.querySelectorAll('.pillar-seg-btn');
   const pillarDetail = document.getElementById('pillar-detail');
