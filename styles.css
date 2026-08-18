@@ -541,6 +541,14 @@ body::after {
 .btn-expand:hover { border-color:var(--gold);color:var(--gold); }
 .btn-expand .expand-arrow { transition:transform var(--t-med); }
 .btn-expand.open .expand-arrow { transform:rotate(180deg); }
+.btn-expand-sm { padding:0.6rem 1.2rem;font-size:0.56rem;margin-top:0.75rem;width:100%;justify-content:center; }
+.news-expand-content {
+  max-height:0;overflow:hidden;
+  transition:max-height 0.6s var(--ease-out),opacity 0.35s ease;
+  opacity:0;
+}
+.news-expand-content.open { max-height:1400px;opacity:1;margin-top:0.75rem; }
+.news-expand-content p { font-size:0.88rem;color:var(--white-70);line-height:1.75;white-space:pre-line; }
 
 /* ──────────────────────────────────────────
    NEWS CARDS
@@ -556,6 +564,9 @@ body::after {
   content:'';display:block;height:2px;background:var(--gold);
   transition:background var(--t-med);
 }
+.news-card-image { width:100%;aspect-ratio:4/3;overflow:hidden;background:var(--black-card); }
+.news-card-image img { width:100%;height:100%;object-fit:cover;display:block;transition:transform var(--t-med); }
+.news-card:hover .news-card-image img { transform:scale(1.04); }
 .news-card-body { padding:var(--sp-md);flex:1;display:flex;flex-direction:column; }
 .news-tag {
   font-family:var(--font-display);font-size:0.58rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;
